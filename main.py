@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 if __name__ == "__main__":
     # Крок 1: Знаходимо оптимальне правило 3x3 (як раніше)
     detector = CellularAutomatonEdgeDetector(
-        "C:\\Users\\R3ap3r\\Downloads\\2.png",
-        population_size=1000,
+        "C:\\Users\\R3ap3r\\Downloads\\111.jpg",
+        population_size=100,
         max_generations=50,
         early_stopping=10,
         n_jobs=-1
