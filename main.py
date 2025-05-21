@@ -4,9 +4,10 @@ from cellular_automaton_edge_detector import CellularAutomatonEdgeDetector
 from filter import cellular_automaton_filter
 from range_optimizer import RangeOptimizer
 import matplotlib.pyplot as plt
+import config
 
 if __name__ == "__main__":
-    image_path = "C:\\Users\\R3ap3r\\Downloads\\1234.png"
+    image_path = config.IMAGE_PATH_EDGE
 
     # Крок 1: Фільтрація від шуму
     original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
@@ -20,11 +21,12 @@ if __name__ == "__main__":
 
     # Крок 2: Знаходимо оптимальне правило 3x3
     detector = CellularAutomatonEdgeDetector(
-        output_path,
-        population_size=100000,
-        max_generations=50,
-        early_stopping=5,
-        n_jobs=-1
+        image_path,
+        population_size=config.POPULATION_SIZE,
+        max_generations=config.MAX_GENERATIONS,
+        early_stopping=config.EARLY_STOPPING,
+        mutation_rate=config.MUTATION_RATE,
+        n_jobs=config.N_JOBS
     )
     best_3x3_rule, history = detector.evolve()
 

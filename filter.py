@@ -2,8 +2,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 from skimage.metrics import structural_similarity as ssim
-from skimage.metrics import peak_signal_noise_ratio as psnr
-
+from config import IMAGE_PATH_FILTER, NOISE_AMOUNT
 
 
 def add_salt_pepper_noise(image, amount=0.05, salt_vs_pepper=0.5):
@@ -120,7 +119,7 @@ def compare_methods_with_psnr_ssim(original, noisy):
 
 def main():
     # Завантаження зображення
-    image_path = "C:\\Users\\R3ap3r\\Downloads\\111.jpg"
+    image_path = IMAGE_PATH_FILTER
     original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
     if original_image is None:
@@ -128,7 +127,7 @@ def main():
         return
 
     # Додавання шуму "сіль (250) і перець (0)"
-    noisy_image = add_salt_pepper_noise(original_image, amount=0.01)
+    noisy_image = add_salt_pepper_noise(original_image, amount=NOISE_AMOUNT)
 
     # Порівняння методів фільтрації
     results = compare_methods_with_psnr_ssim(original_image, noisy_image)
