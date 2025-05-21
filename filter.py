@@ -134,5 +134,5 @@ def main():
     results = compare_methods_with_psnr_ssim(original_image, noisy_image)
     print(results)
 
-
-#main()
+if __name__ == "__main__":
+    main()
