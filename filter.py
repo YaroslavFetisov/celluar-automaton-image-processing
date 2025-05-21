@@ -23,7 +23,7 @@ def add_salt_pepper_noise(image, amount=0.05, salt_vs_pepper=0.5):
     return noisy
 
 
-def cellular_automaton_filter_modified(image, extreme_values=(0, 250)):
+def cellular_automaton_filter(image, extreme_values=(0, 250)):
     """Модифікований фільтр клітинних автоматів з виключенням екстремальних значень"""
     filtered = np.copy(image)
     padded = np.pad(image, pad_width=1, mode='edge')
@@ -59,7 +59,7 @@ def cellular_automaton_filter_modified(image, extreme_values=(0, 250)):
 def compare_methods_with_psnr_ssim(original, noisy):
     """Порівняння різних методів фільтрації з модифікованим алгоритмом, використовуючи PSNR та SSIM"""
     # Фільтрація модифікованим методом клітинних автоматів
-    ca_modified = cellular_automaton_filter_modified(noisy)
+    ca_modified = cellular_automaton_filter(noisy)
 
     # Гаусівський фільтр
     gaussian_filtered = cv2.GaussianBlur(noisy, (3, 3), 0)
@@ -135,4 +135,4 @@ def main():
     print(results)
 
 
-main()
+#main()
