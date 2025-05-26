@@ -1,9 +1,10 @@
 import cv2
-from CPU.cellular_automaton_edge_detector import CellularAutomatonEdgeDetector
-from CPU.range_optimizer import RangeOptimizer
+from CUDA.cellular_automaton_edge_detector_cuda import CellularAutomatonEdgeDetector
+from CUDA.range_optimizer_cuda import RangeOptimizer
 import matplotlib.pyplot as plt
 import config
 import numpy as np
+import cupy as cp  # Add CuPy import for explicit conversion
 
 if __name__ == "__main__":
     image_path = config.IMAGE_PATH_EDGE
@@ -18,7 +19,7 @@ if __name__ == "__main__":
         max_generations=config.MAX_GENERATIONS,
         early_stopping=config.EARLY_STOPPING,
         mutation_rate=config.MUTATION_RATE,
-        n_jobs=config.N_JOBS
+        # n_jobs=config.N_JOBS
     )
     best_3x3_rule, history = detector.evolve()
 
@@ -28,6 +29,10 @@ if __name__ == "__main__":
 
     # Фінальний результат
     edges_combined = optimizer.apply_range_rule(detector.image_processor.binary_image, lower, upper)
+
+    # Переконаємося, що edges_combined є NumPy масивом
+    if isinstance(edges_combined, cp.ndarray):
+        edges_combined = edges_combined.get()
 
     # Лапласіан
     laplacian = cv2.Laplacian(original_image, cv2.CV_64F)
@@ -42,8 +47,13 @@ if __name__ == "__main__":
     plt.title("Оригінал")
     plt.axis('off')
 
+    # Переконаємося, що canny_edges є NumPy масивом
+    canny_edges = detector.image_processor.canny_edges
+    if isinstance(canny_edges, cp.ndarray):
+        canny_edges = canny_edges.get()
+
     plt.subplot(142)
-    plt.imshow(detector.image_processor.canny_edges, cmap='gray')
+    plt.imshow(canny_edges, cmap='gray')
     plt.title("Кенні")
     plt.axis('off')
 

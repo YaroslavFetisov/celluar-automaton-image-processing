@@ -1,4 +1,4 @@
-from image_processor import ImageProcessor
+from CPU.image_processor import ImageProcessor
 from population import Population
 from local_search import LocalSearch
 from crossover_and_mutation import CrossoverAndMutation
