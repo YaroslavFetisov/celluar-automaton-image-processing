@@ -4,6 +4,7 @@ from CPU.range_optimizer import RangeOptimizer
 import matplotlib.pyplot as plt
 import config
 import numpy as np
+import time
 
 if __name__ == "__main__":
     image_path = config.IMAGE_PATH_EDGE
@@ -11,6 +12,7 @@ if __name__ == "__main__":
     # Завантажуємо оригінальне зображення
     original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
+    start_time = time.time()
     # Знаходимо оптимальне правило 3x3
     detector = CellularAutomatonEdgeDetector(
         image_path,
@@ -21,6 +23,8 @@ if __name__ == "__main__":
         n_jobs=config.N_JOBS
     )
     best_3x3_rule, history = detector.evolve()
+    end_time = time.time()
+    print(f"Час виконання алгоритму КА: {end_time - start_time:.4f} секунд")
 
     # Оптимізуємо діапазон для 7x7
     optimizer = RangeOptimizer(detector.image_processor, best_3x3_rule)

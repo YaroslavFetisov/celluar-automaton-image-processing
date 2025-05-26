@@ -1,7 +1,7 @@
 from CPU.image_processor import ImageProcessor
-from population import Population
-from local_search import LocalSearch
-from crossover_and_mutation import CrossoverAndMutation
+from CPU.population import Population
+from CPU.local_search import LocalSearch
+from CPU.crossover_and_mutation import CrossoverAndMutation
 from joblib import Parallel, delayed
 from tqdm import tqdm
 import numpy as np

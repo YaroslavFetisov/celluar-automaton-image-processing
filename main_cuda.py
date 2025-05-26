@@ -1,10 +1,11 @@
 import cv2
 from CUDA.cellular_automaton_edge_detector_cuda import CellularAutomatonEdgeDetector
-from CUDA.range_optimizer_cuda import RangeOptimizer
+from CPU.range_optimizer import RangeOptimizer
 import matplotlib.pyplot as plt
 import config
 import numpy as np
-import cupy as cp  # Add CuPy import for explicit conversion
+import cupy as cp
+import time
 
 if __name__ == "__main__":
     image_path = config.IMAGE_PATH_EDGE
@@ -12,6 +13,7 @@ if __name__ == "__main__":
     # Завантажуємо оригінальне зображення
     original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
+    start_time = time.time()
     # Знаходимо оптимальне правило 3x3
     detector = CellularAutomatonEdgeDetector(
         image_path,
@@ -22,8 +24,10 @@ if __name__ == "__main__":
         # n_jobs=config.N_JOBS
     )
     best_3x3_rule, history = detector.evolve()
+    end_time = time.time()
+    print(f"Час виконання алгоритму КА: {end_time - start_time:.4f} секунд")
 
-    # Оптимізуємо діапазон для 7x7
+    # Оптимізуємо діапазон для 3x3
     optimizer = RangeOptimizer(detector.image_processor, best_3x3_rule)
     lower, upper, f1 = optimizer.optimize_range()
 
@@ -71,4 +75,4 @@ if __name__ == "__main__":
     plt.show()
 
     print(f"Найкраще правило 3x3: {best_3x3_rule}")
-    print(f"Найкращий діапазон для 7x7: [{lower}, {upper}], F1: {f1:.4f}")
+    print(f"Діапазон для 3x3: [{lower}, {upper}], F1: {f1:.4f}")

@@ -61,7 +61,7 @@ class CellularAutomatonEdgeDetector:
 
             if current_best > best_fitness:
                 best_fitness = current_best
-                best_rule = current_best_rule.copy()
+                best_rule = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 0])
                 no_improvement = 0
             else:
                 no_improvement += 1
