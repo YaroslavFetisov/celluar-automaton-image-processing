@@ -2,20 +2,19 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 from skimage.metrics import structural_similarity as ssim
+import time  # імпортуємо модуль для вимірювання часу
 from config import IMAGE_PATH_FILTER, NOISE_AMOUNT
 
 
 def add_salt_pepper_noise(image, amount=0.05, salt_vs_pepper=0.5):
-    """Додавання шуму "сіль і перець" до зображення"""
+    """Додавання шуму 'сіль і перець' до зображення"""
     noisy = np.copy(image)
     num_salt = np.ceil(amount * image.size * salt_vs_pepper)
     num_pepper = np.ceil(amount * image.size * (1.0 - salt_vs_pepper))
 
-    # Додавання "солі" (білі пікселі)
     coords = [np.random.randint(0, i - 1, int(num_salt)) for i in image.shape]
     noisy[coords[0], coords[1]] = 250  # Змінимо білий колір на 250 (замість 255)
 
-    # Додавання "перцю" (чорні пікселі)
     coords = [np.random.randint(0, i - 1, int(num_pepper)) for i in image.shape]
     noisy[coords[0], coords[1]] = 0
 
@@ -24,6 +23,9 @@ def add_salt_pepper_noise(image, amount=0.05, salt_vs_pepper=0.5):
 
 def cellular_automaton_filter(image, extreme_values=(0, 250)):
     """Модифікований фільтр клітинних автоматів з виключенням екстремальних значень"""
+    # Початок вимірювання часу
+    start_time = time.time()
+
     filtered = np.copy(image)
     padded = np.pad(image, pad_width=1, mode='edge')
     min_val, max_val = extreme_values
@@ -51,6 +53,10 @@ def cellular_automaton_filter(image, extreme_values=(0, 250)):
 
             # Оновлення пікселя
             filtered[i - 1, j - 1] = trimmed[0]
+
+    # Кінець вимірювання часу
+    end_time = time.time()
+    print(f"Час виконання алгоритму КА: {end_time - start_time:.4f} секунд")
 
     return filtered.astype(np.uint8)
 
@@ -132,6 +138,7 @@ def main():
     # Порівняння методів фільтрації
     results = compare_methods_with_psnr_ssim(original_image, noisy_image)
     print(results)
+
 
 if __name__ == "__main__":
     main()

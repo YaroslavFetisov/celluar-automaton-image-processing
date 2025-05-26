@@ -1,6 +1,6 @@
 # Шлях до зображення
 IMAGE_PATH_EDGE = r'source_images\veg.png'
-IMAGE_PATH_FILTER = r'../source_images/Lenna.png'
+IMAGE_PATH_FILTER = r'../source_images/2048.jpg'
 
 # Параметри для клітинного автомата
 POPULATION_SIZE = 1000
